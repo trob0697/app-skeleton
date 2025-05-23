@@ -1,0 +1,35 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "start": "docker compose down && docker compose up --force-recreate",
+    "install-all": "npm ci && cd ./backend && npm ci && cd ../frontend && npm ci",
+    "lint": "npx eslint",
+    "lint:fix": "npx eslint --fix",
+    "cspell": "npx cspell \"**\"",
+    "generate:secret": "openssl rand -hex 32",
+    "ngronk:frontend": "ngrok http http://localhost:3000",
+    "ngronk:backend": "ngrok http http://localhost:4000",
+    "push-image:frontend": "cd ./frontend && docker buildx build --platform linux/amd64 -t us-east1-docker.pkg.dev/{{ GCP_PROJECT_ID }}/app/frontend:latest --push . && cd ../",
+    "push-image:backend": "cd ./backend && docker buildx build --platform linux/amd64 -t us-east1-docker.pkg.dev/{{ GCP_PROJECT_ID }}/app/backend:latest --push . && cd ../",
+    "terraform:fmt": "cd ./terraform && terraform fmt && cd ../",
+    "terraform:init": "cd ./terraform && terraform init && terraform apply -target=google_artifact_registry_repository.app && cd ../",
+    "terraform:apply": "cd ./terraform && terraform apply && cd ../",
+    "terraform:destroy": " cd ./terraform && terraform destroy && cd ../",
+    "deploy": "npm run terraform:init && npm run push-image:frontend && npm run push-image:backend && npm run terraform:apply"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.7.0",
+    "@trivago/prettier-plugin-sort-imports": "6.0.2",
+    "cspell": "9.7.0",
+    "eslint": "^9.7.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.5",
+    "eslint-plugin-react": "7.37.5",
+    "globals": "17.4.0",
+    "prettier": "3.8.1",
+    "typescript-eslint": "8.58.0"
+  }
+}

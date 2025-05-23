@@ -1,0 +1,34 @@
+{
+  "name": "backend",
+  "scripts": {
+    "start": "echo 'Applying migrations' && npm run db:migrate --silent && echo 'Seeding database' && npm run db:seed --silent && node dist/src/index.js",
+    "dev": "echo 'Applying migrations' && npm run db:migrate --silent && echo 'Seeding database' && npm run db:seed --silent && npx tsx --watch src/index.ts",
+    "build": "npx tsc",
+    "test": "echo \"No backend tests specified\"",
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "npx drizzle-kit migrate",
+    "db:seed": "npx tsx ./src/db/seed/index.ts"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "1.4.10",
+    "@types/express": "5.0.6",
+    "@types/jsonwebtoken": "9.0.10",
+    "@types/morgan": "1.9.10",
+    "@types/pg": "8.20.0",
+    "drizzle-kit": "^0.31.10",
+    "tsx": "4.21.0",
+    "typescript": "6.0.2"
+  },
+  "dependencies": {
+    "@clerk/express": "^2.0.7",
+    "cookie-parser": "1.4.7",
+    "dotenv": "17.3.1",
+    "drizzle-orm": "0.45.2",
+    "express": "5.2.1",
+    "joi": "18.1.2",
+    "jsonwebtoken": "9.0.3",
+    "pg": "8.20.0",
+    "types-joi": "2.1.0",
+    "winston": "3.19.0"
+  }
+}

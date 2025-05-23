@@ -1,0 +1,71 @@
+name: CI/CD Branch Pipeline
+
+on:
+  push:
+    branches-ignore:
+      - master
+  pull_request:
+    branches-ignore:
+      - master
+
+jobs:
+  filter-paths:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters:
+            backend:
+              - "backend/**"
+            frontend:
+              - "frontend/**"
+            terraform:
+              - "terraform/**"
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Install Dependencies
+        run: npm install
+      - name: Run CSpell
+        run: npm run cspell
+      - name: Run Linter
+        run: npm run lint
+  test-backend:
+    needs: filter-paths
+    if: needs.filter-paths.outputs.backend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Install Backend Dependencies
+        run: cd ./backend && npm install
+      - name: Build Backend
+        run: cd ./backend && npm run build
+      - name: Test Backend
+        run: cd ./backend && npm run test
+  test-frontend:
+    needs: filter-paths
+    if: needs.filter-paths.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Install Frontend Dependencies
+        run: cd ./frontend && npm install
+      - name: Build Frontend
+        run: cd ./frontend && npm run build
+      - name: Test Frontend
+        run: cd ./frontend && npm run test

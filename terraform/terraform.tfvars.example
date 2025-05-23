@@ -1,0 +1,27 @@
+# Copy this file to terraform.tfvars and fill in all values.
+# terraform.tfvars is gitignored — never commit secrets.
+
+# ── GCP ───────────────────────────────────────────────────────────────────────
+project_id = "your-gcp-project-id"
+region     = "us-east1"
+app_name   = "app-name"
+domain     = "domain.com"
+
+# ── Image tags ────────────────────────────────────────────────────────────────
+backend_image_tag  = "latest"
+frontend_image_tag = "latest"
+
+# ── Database ──────────────────────────────────────────────────────────────────
+db_name     = "postgres"
+db_user     = "postgres"
+db_password = "change-me-strong-password"
+db_tier     = "db-g1-small"   # upgrade to db-custom-* for production workloads
+
+# ── Security ──────────────────────────────────────────────────────────────────
+encryption_key = ""
+
+# ── Clerk ─────────────────────────────────────────────────────────────────────
+clerk_publishable_key             = "pk_live_..."
+clerk_secret_key                  = "sk_live_..."
+clerk_webhook_secret              = "whsec_..."
+clerk_admin_user_id               = ""

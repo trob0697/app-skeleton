@@ -1,0 +1,40 @@
+services:
+  frontend:
+    build: ./frontend
+    container_name: next-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+    env_file:
+      - ./.env
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  backend:
+    build: ./backend
+    container_name: express-backend
+    restart: always
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend/src:/app/src
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+
+  db:
+    image: postgres:15-alpine
+    container_name: postgres-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres

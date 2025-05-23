@@ -1,0 +1,22 @@
+{
+  "ignorePaths": [
+    "*/node_modules/**",
+    "*/.next/**",
+    "./backend/src/db/migrations/**",
+    "terraform/terraform.*"
+  ],
+  "words": [
+    "artifactregistry",
+    "buildx",
+    "cloudsql",
+    "healthcheck",
+    "millis",
+    "ngronk",
+    "secretmanager",
+    "sqladmin",
+    "tahreak",
+    "tfvars",
+    "trivago",
+    "turbopack"
+  ]
+}
